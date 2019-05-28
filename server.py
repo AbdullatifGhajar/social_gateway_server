@@ -31,7 +31,7 @@ answers_csv_writer = csv.DictWriter(
     ('user_id', 'date', 'app_id', 'question_id', 'answer'))
 answers_csv_writer.writeheader()
 
-@app.route('/answer', methods=('POST',))
+@app.route('/answer', methods=('GET', 'POST'))
 def receive_answer():
     answers_csv_writer.writerow({
         'user_id': request.args.get('user_id', 'NULL'),
