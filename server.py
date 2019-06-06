@@ -24,14 +24,14 @@ app_names = [
 @app.route('/question')
 def send_question():
     app_id = int(request.args.get('app_id', '0'))
-    return random.choices(questions)[0].replace('<app_name>', app_names[app_id])
+    return random.choice(questions).replace('<app_name>', app_names[app_id])
 
-answers_csv_writer = csv.DictWriter(
-    open('answers.csv', 'a', newline='', buffering=1),
+answers_file = open('answers.csv', 'a', newline='', buffering=1)
+answers_csv_writer = csv.DictWriter(answers_file,
     ('user_id', 'date', 'app_id', 'question_id', 'answer'))
 answers_csv_writer.writeheader()
 
-@app.route('/answer', methods=('GET', 'POST'))
+@app.route('/answer', methods=('POST',))
 def receive_answer():
     answers_csv_writer.writerow({
         'user_id': request.args.get('user_id', 'NULL'),
