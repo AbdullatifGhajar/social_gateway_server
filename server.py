@@ -10,34 +10,24 @@ questions = [
     'question 2',
     'question 3']
 
-app_names = [
-    'this app',
-    'Instagram',
-    'Snapchat',
-    'WhatsApp',
-    'Facebook',
-    'Facebook Messenger',
-    'Signal',
-    'Telegram'
-]
-
 @app.route('/question')
 def send_question():
-    app_id = int(request.args.get('app_id', '0'))
-    return random.choice(questions).replace('<app_name>', app_names[app_id])
+    app_name = request.args.get('app_name', 'this app')
+    return random.choice(questions).replace('<app_name>', app_name)
 
 answers_file = open('answers.csv', 'a', newline='', buffering=1)
 answers_csv_writer = csv.DictWriter(answers_file,
-    ('user_id', 'date', 'app_id', 'question_id', 'answer'))
+    ('user_id', 'date', 'app_name', 'question', 'answer'))
 answers_csv_writer.writeheader()
 
 @app.route('/answer', methods=('POST',))
 def receive_answer():
+    data = request.get_json(force=True)
     answers_csv_writer.writerow({
-        'user_id': request.args.get('user_id', 'NULL'),
+        'user_id': data.get('user_id', 'NULL'),
         'date': datetime.utcnow().isoformat(),
-        'app_id': request.args.get('app_id', 'NULL'),
-        'question_id': request.args.get('question_id', 'NULL'),
-        'answer': request.args.get('answer', 'NULL'),
+        'app_name': data.get('app_name', 'NULL'),
+        'question': data.get('question', 'NULL'),
+        'answer': data.get('answer', 'NULL'),
     })
     return 'Thanks for your answer!'
