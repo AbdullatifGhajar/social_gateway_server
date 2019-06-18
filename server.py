@@ -23,7 +23,7 @@ answers_csv_writer.writeheader()
 
 @app.route('/answer', methods=('POST',))
 def receive_answer():
-    data = request.get_json()
+    data = request.get_json(force=True)
     answers_csv_writer.writerow({
         'user_id': data.get('user_id', 'NULL'),
         'date': datetime.utcnow().isoformat(),
