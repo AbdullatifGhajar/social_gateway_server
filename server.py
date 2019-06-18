@@ -1,28 +1,29 @@
 from flask import Flask, request
-import random
 from datetime import datetime
+import random
+import json
 import csv
 
 app = Flask(__name__)
+questions = json.load(open('questions.json'))
 
-questions = [
-    'What do you expect of using <app_name> right now?',
-    'question 2',
-    'question 3']
 
 @app.route('/question')
 def send_question():
     app_name = request.args.get('app_name', 'this app')
-    return random.choice(questions).replace('<app_name>', app_name)
+    language = request.args.get('language', 'english')
+    return random.choice(questions)[language].replace('<app_name>', app_name)
+
 
 answers_file = open('answers.csv', 'a', newline='', buffering=1)
-answers_csv_writer = csv.DictWriter(answers_file,
-    ('user_id', 'date', 'app_name', 'question', 'answer'))
+answers_csv_writer = csv.DictWriter(
+        answers_file, ('user_id', 'date', 'app_name', 'question', 'answer'))
 answers_csv_writer.writeheader()
+
 
 @app.route('/answer', methods=('POST',))
 def receive_answer():
-    data = request.get_json(force=True)
+    data = request.get_json()
     answers_csv_writer.writerow({
         'user_id': data.get('user_id', 'NULL'),
         'date': datetime.utcnow().isoformat(),
