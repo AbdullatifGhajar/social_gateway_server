@@ -3,6 +3,7 @@ from datetime import datetime
 import random
 import json
 import csv
+import os
 
 app = Flask(__name__)
 questions = json.load(open('questions.json'))
@@ -18,7 +19,8 @@ def send_question():
 answers_file = open('answers.csv', 'a', newline='', buffering=1)
 answers_csv_writer = csv.DictWriter(
         answers_file, ('user_id', 'date', 'app_name', 'question', 'answer'))
-answers_csv_writer.writeheader()
+if os.stat('answers.csv').st_size == 0:
+    answers_csv_writer.writeheader()
 
 
 @app.route('/answer', methods=('POST',))
