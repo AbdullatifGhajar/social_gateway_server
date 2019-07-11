@@ -23,7 +23,7 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
     with open('questions.json') as f:
         questions = json.load(f)
 
-    # no with, keep the file open as long as the server is running
+    # not using "with", keep the file open as long as the server is running
     # newline='' is recommended for csv, buffering=1 means line buffering
     answers_file = open('answers.csv', 'a', newline='', buffering=1)
     answers_csv_writer = csv.DictWriter(
