@@ -9,12 +9,15 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
-def main(testing=False, injected_questions=None, injected_write_row=None):
-    global questions, write_row
+def main(testing=False, injected_questions=None, injected_write_answer=None,
+         injected_write_audio=None):
+    global questions, write_answer, write_audio
 
+    # dependency injection for testing
     if testing:
         questions = injected_questions
-        write_row = injected_write_row
+        write_answer = injected_write_answer
+        write_audio = injected_write_audio
         return
 
     with open('questions.json') as f:
@@ -37,8 +40,12 @@ def main(testing=False, injected_questions=None, injected_write_row=None):
     if os.stat(answers_file.name).st_size == 0:
         answers_csv_writer.writeheader()
 
-    def write_row(row):
+    def write_answer(row):
         answers_csv_writer.writerow(row)
+
+    def write_audio(file_name, data):
+        with open(file_name, 'wb') as f:
+            f.write(data)
 
 
 @app.route('/question')
@@ -54,7 +61,7 @@ def send_question():
 @app.route('/answer', methods=('POST',))
 def receive_answer():
     data = request.get_json(force=True)
-    write_row({
+    write_answer({
         'date': datetime.utcnow().isoformat(),
         'user_id': data.get('user_id', 'NULL'),
         'app_name': data.get('app_name', 'NULL'),
@@ -62,19 +69,22 @@ def receive_answer():
         'answer_text': data.get('answer_text', 'NULL'),
         'answer_audio_uuid': data.get('answer_audio_uuid', 'NULL'),
     })
+    # if answer_audio_uuid is set the data should be sent to /audio
     return 'Thanks for your answer!'
 
 
 @app.route('/audio', methods=('POST',))
 def receive_audio():
+    if 'uuid' not in request.args.keys():
+        return 'UUID is required.'
+
+    if not request.content_length:
+        return 'Audio data is required.'
+
     if request.content_length > 5 * 10**6:
         return f'File is too big: {request.content_length} byte.'
 
-    if 'uuid' not in request.args.keys():
-        return 'uuid is required'
-
-    with open(f'audio/{request.args["uuid"]}.aac', 'wb') as f:
-        f.write(request.get_data())
+    write_audio(f'audio/{request.args["uuid"]}.aac', request.get_data())
 
     return 'Thanks for your audio answer!'
 

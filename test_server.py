@@ -42,12 +42,12 @@ def test_receive_answer(client):
                      'answer_text': 'NULL',
                      'answer_audio_uuid': 'NULL'}
 
-    def write_row(row):
+    def write_answer(row):
         for key, value in expected_data.items():
             assert row[key] == value
         assert row['date']
 
-    server.main(testing=True, injected_write_row=write_row)
+    server.main(testing=True, injected_write_answer=write_answer)
 
     response = client.post('/answer', data=b'{}').data.decode()
     assert response == 'Thanks for your answer!'
@@ -65,3 +65,17 @@ def test_receive_answer(client):
                              "question": "You afraid of superintelligence?",
                              "answer_text": "Oh yes."}''').data.decode()
     assert response == 'Thanks for your answer!'
+
+
+def test_receive_audio(client):
+    assert client.post('/audio').data.decode() == 'UUID is required.'
+    assert client.post('/audio?uuid=b3f').data.decode() \
+        == client.post('/audio?uuid=b3f', data=b'').data.decode() \
+        == 'Audio data is required.'
+
+    def write_audio(file_name, data):
+        assert file_name == 'audio/b3f.aac'
+        assert data == b'test'
+    server.main(testing=True, injected_write_audio=write_audio)
+    assert client.post('/audio?uuid=b3f', data=b'test').data.decode() \
+        == 'Thanks for your audio answer!'
