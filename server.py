@@ -89,5 +89,6 @@ def receive_audio():
     return 'Thanks for your audio answer!'
 
 
-if __name__ == "__main__":
+# the usual if __name__ == "__main__": doesn't work with flask
+if os.environ.get('FLASK_APP'):
     main()
