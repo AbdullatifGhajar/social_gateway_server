@@ -23,6 +23,10 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
     with open('questions.json') as f:
         questions = json.load(f)
 
+        for question in questions:
+            for key in ('english', 'german'):
+                assert key in question
+
     # not using "with", keep the file open as long as the server is running
     # newline='' is recommended for csv, buffering=1 means line buffering
     answers_file = open('answers.csv', 'a', newline='', buffering=1)
@@ -51,10 +55,15 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
 @app.route('/question')
 def send_question():
     app_name = request.args.get('app_name', 'this app')
-    language = request.args.get('language', 'english')
-    question_id = request.args.get('question_id', randrange(len(questions)))
+    suitable_questions = \
+        [question for question in questions
+         if 'whitelist' not in question or app_name in question['whitelist']]
 
-    question_template = questions[int(question_id)][language]
+    language = request.args.get('language', 'english')
+    question_id = request.args.get('question_id',
+                                   randrange(len(suitable_questions)))
+
+    question_template = suitable_questions[int(question_id)][language]
     return question_template.replace('<app_name>', app_name)
 
 
