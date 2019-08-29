@@ -53,7 +53,7 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
 
 
 def key_is_invalid(key):
-    return key != 'hef3$TF$^Vg90546bvgFVL>Zzxskfou;aswperwrsf,c/x'
+    return key != 'hef3TF^Vg90546bvgFVL>Zzxskfou;aswperwrsf,c/x'
 
 
 @app.route('/question')
