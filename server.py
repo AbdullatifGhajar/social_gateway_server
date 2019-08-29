@@ -98,6 +98,6 @@ def receive_audio():
     return 'Thanks for your audio answer!'
 
 
-# the usual if __name__ == "__main__": doesn't work with flask
-if os.environ.get('FLASK_APP'):
+if __name__ == '__main__':
     main()
+    app.run(ssl_context='adhoc', host='0.0.0.0')
