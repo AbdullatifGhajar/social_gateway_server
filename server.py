@@ -97,7 +97,7 @@ def receive_audio():
 
     return 'Thanks for your audio answer!'
 
+main()
 
 if __name__ == '__main__':
-    main()
     app.run(ssl_context='adhoc', host='0.0.0.0')
