@@ -93,7 +93,7 @@ def receive_audio():
     if request.content_length > 5 * 10**6:
         return 'File is too big: ' + request.content_length + ' byte.'
 
-    write_audio(f'audio/' + request.args["uuid"] + '.aac', request.get_data())
+    write_audio('audio/' + request.args["uuid"] + '.aac', request.get_data())
 
     return 'Thanks for your audio answer!'
 
