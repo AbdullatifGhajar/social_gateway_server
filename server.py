@@ -52,8 +52,15 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
             f.write(data)
 
 
+def key_is_invalid(key):
+    return key != 'hef3$TF$^Vg90546bvgFVL>Zzxskfou;aswperwrsf,c/x'
+
+
 @app.route('/question')
 def send_question():
+    if key_is_invalid(request.args.get('key', '')):
+        return ''
+
     app_name = request.args.get('app_name', 'this app')
     suitable_questions = \
         [question for question in questions
@@ -69,6 +76,9 @@ def send_question():
 
 @app.route('/answer', methods=('POST',))
 def receive_answer():
+    if key_is_invalid(request.args.get('key', '')):
+        return ''
+
     data = request.get_json(force=True)
     write_answer({
         'date': datetime.utcnow().isoformat(),
@@ -84,6 +94,9 @@ def receive_answer():
 
 @app.route('/audio', methods=('POST',))
 def receive_audio():
+    if key_is_invalid(request.args.get('key', '')):
+        return ''
+
     if 'uuid' not in request.args.keys():
         return 'UUID is required.'
 
@@ -97,7 +110,10 @@ def receive_audio():
 
     return 'Thanks for your audio answer!'
 
+
 main()
 
 if __name__ == '__main__':
-    app.run(ssl_context='adhoc', host='0.0.0.0')
+    app.run(
+        # ssl_context='adhoc',
+        host='0.0.0.0')
