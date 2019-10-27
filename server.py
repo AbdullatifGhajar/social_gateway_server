@@ -56,7 +56,7 @@ def key_is_invalid(key):
     return key != 'hef3TF^Vg90546bvgFVL>Zzxskfou;aswperwrsf,c/x'
 
 
-@app.route('/question')
+@app.route('/browser/question')
 def send_question():
     if key_is_invalid(request.args.get('key', '')):
         return ''
@@ -74,7 +74,7 @@ def send_question():
     return question_template.replace('<app_name>', app_name)
 
 
-@app.route('/answer', methods=('POST',))
+@app.route('/browser/answer', methods=('POST',))
 def receive_answer():
     if key_is_invalid(request.args.get('key', '')):
         return ''
@@ -92,7 +92,7 @@ def receive_answer():
     return 'Thanks for your answer!'
 
 
-@app.route('/audio', methods=('POST',))
+@app.route('/browser/audio', methods=('POST',))
 def receive_audio():
     if key_is_invalid(request.args.get('key', '')):
         return ''
