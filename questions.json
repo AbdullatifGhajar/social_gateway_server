@@ -22,8 +22,8 @@
         "whitelist": ["Telegram", "WhatsApp"]
     },
     {
-        "english": "How do you feel now, after spending time in <app_name>?",
-        "german": "Wie geht es dir jetzt, nachdem du Zeit mit <app_name> verbracht hast?",
+        "english": "How do you feel about your experience just now on <app_name>?",
+        "german": "Wie fühlst du dich mit deinem Erlebis auf <app_name> gerade eben?",
         "question_type": "reflection"
     }
 ]
