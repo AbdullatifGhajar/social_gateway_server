@@ -20,5 +20,10 @@
         "english": "Do you like stickers?",
         "german": "Magst du Sticker?",
         "whitelist": ["Telegram", "WhatsApp"]
+    },
+    {
+        "english": "How do you feel now, after spending time in <app_name>?",
+        "german": "Wie geht es dir jetzt, nachdem du Zeit mit <app_name> verbracht hast?",
+        "question_type": "reflection"
     }
 ]

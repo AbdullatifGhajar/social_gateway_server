@@ -62,9 +62,11 @@ def send_question():
         return ''
 
     app_name = request.args.get('app_name', 'this app')
+    question_type = request.args.get('question_type', 'normal')
     suitable_questions = \
         [question for question in questions
-         if 'whitelist' not in question or app_name in question['whitelist']]
+         if ('whitelist' not in question or app_name in question['whitelist'])
+         and question.get('question_type', 'normal') == question_type]
 
     language = request.args.get('language', 'english')
     question_id = request.args.get('question_id',
