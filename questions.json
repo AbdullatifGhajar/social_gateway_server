@@ -1,29 +1,44 @@
 [
-    {
-        "english": "What do you expect of using <app_name> right now?",
-        "german": "Was erwartest du davon jetzt <app_name> zu benutzen?"
-    },
-    {
-        "english": "What do you think is the best use of your time right now?",
-        "german": "Was meinst du wäre genau jetzt das Sinnvollste was du tun könntest?"
-    },
-    {
-        "english": "Are you afraid of superintelligent AI?",
-        "german": "Fürchtest du dich vor superintelligenter KI?"
-    },
-    {
-        "english": "Do you like Telegram's animated stickers?",
-        "german": "Magst du die animierten Sticker von Telegram?",
-        "whitelist": ["Telegram"]
-    },
-    {
-        "english": "Do you like stickers?",
-        "german": "Magst du Sticker?",
-        "whitelist": ["Telegram", "WhatsApp"]
-    },
-    {
-        "english": "How do you feel about your experience just now on <app_name>?",
-        "german": "Wie fühlst du dich mit deinem Erlebis auf <app_name> gerade eben?",
-        "question_type": "reflection"
-    }
+  {
+    "english": "What made you decide to open <app_name> right now?"
+  },
+  {
+    "english": "Hey! What do you expect of using <app_name> today?"
+  },
+  {
+    "english": "What is your goal for social media today?"
+  },
+  {
+    "english": "Go outside and get some fresh air!"
+  },
+  {
+    "english": "Dont forget to take a water break & stretch!"
+  },
+  {
+    "english": "How long do you hope to use <app_name> for?"
+  },
+  {
+    "english": "Remember to take calm breaths when feeling stressed."
+  },
+  {
+    "english": "Have you taken a walk today?"
+  },
+  {
+    "english": "What type of videos do you watch?"
+  },
+  {
+    "english": "What kind of content do you think you will see?"
+  },
+  {
+    "english": "How do you feel about your experience just now on <app_name>?",
+    "question_type": "reflection"
+  },
+  {
+    "english": "What was the best thing you saw today?",
+    "question_type": "reflection"
+  },
+  {
+    "english": "Whats something you found funny today?",
+    "question_type": "reflection"
+  }
 ]

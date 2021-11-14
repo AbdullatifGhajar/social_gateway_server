@@ -1,2 +1,10 @@
+# user data
 answers.csv
 audio/
+
+# env
+.env
+
+# cache
+__pycache__
+.pytest_cache
