@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 import json
 import os
+from functools import wraps
 from random import randrange
 
 from flask import Flask, request
@@ -12,6 +13,10 @@ SUPPORTED_LANGUAGES = ('english',)
 DEFAULT_LANGUAGE = 'english'
 DEFAULT_QUESTION_TYPE = 'normal'
 LINE_BUFFERING = 1
+
+
+def is_valid_key(key):
+    return key == 'hef3TF^Vg90546bvgFVL>Zzxskfou;aswperwrsf,c/x'
 
 
 def main(testing=False, injected_questions=None, injected_write_answer=None,
@@ -58,18 +63,20 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
             f.write(data)
 
 
-def is_valid_key(key):
-    # TODO: find a better place for this
-    return key != 'hef3TF^Vg90546bvgFVL>Zzxskfou;aswperwrsf,c/x'
+def key_required(func):
+    @wraps(func)
+    def check_key(*args, **kwargs):
+        if(is_valid_key(request.args.get('key', ''))):
+            return func(*args, **kwargs)
+        else:
+            return 'invalid key', 401
+
+    return check_key
 
 
 @app.route('/browser/question')
+@key_required
 def send_question():
-    # TODO: return a failure, not blank
-    # TODO: use decorator for that
-    if not is_valid_key(request.args.get('key', '')):
-        return ''
-
     app_name = request.args.get('app_name', 'this app')
     question_type = request.args.get('question_type', DEFAULT_QUESTION_TYPE)
 
@@ -97,10 +104,8 @@ def send_question():
 
 
 @app.route('/browser/answer', methods=('POST',))
+@key_required
 def receive_answer():
-    if not is_valid_key(request.args.get('key', '')):
-        return ''
-
     data = request.get_json(force=True)
     write_answer({
         'date': datetime.utcnow().isoformat(),
@@ -115,20 +120,17 @@ def receive_answer():
 
 
 @app.route('/browser/audio', methods=('POST',))
+@key_required
 def receive_audio():
-    if not is_valid_key(request.args.get('key', '')):
-        return ''
-
-    # TODO: return errors
     # TODO: rename assertions
     if 'uuid' not in request.args.keys():
-        return 'UUID is required.'
+        return 'UUID is required.', 400
 
     if not request.content_length:
-        return 'Audio data is required.'
+        return 'Audio data is required.', 400
 
     if request.content_length > 5 * 10**6:
-        return 'File is too big: ' + request.content_length + ' byte.'
+        return 'File is too big: ' + request.content_length + ' byte.', 400
 
     write_audio('audio/' + request.args["uuid"] + '.aac', request.get_data())
 
