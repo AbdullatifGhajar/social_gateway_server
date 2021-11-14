@@ -3,6 +3,7 @@ answers.csv
 audio/
 
 # env
+.venv
 .env
 
 # cache

@@ -4,19 +4,19 @@ import json
 import os
 from functools import wraps
 from random import randrange
+from dotenv import load_dotenv
 
 from flask import Flask, request
 
 app = Flask(__name__)
 
+load_dotenv()
+
 SUPPORTED_LANGUAGES = ('english',)
 DEFAULT_LANGUAGE = 'english'
 DEFAULT_QUESTION_TYPE = 'normal'
 LINE_BUFFERING = 1
-
-
-def is_valid_key(key):
-    return key == 'hef3TF^Vg90546bvgFVL>Zzxskfou;aswperwrsf,c/x'
+KEY = os.environ.get('KEY')
 
 
 def main(testing=False, injected_questions=None, injected_write_answer=None,
@@ -66,7 +66,7 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
 def key_required(func):
     @wraps(func)
     def check_key(*args, **kwargs):
-        if(is_valid_key(request.args.get('key', ''))):
+        if(request.args.get('key', '') == KEY):
             return func(*args, **kwargs)
         else:
             return 'invalid key', 401
