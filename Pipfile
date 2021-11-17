@@ -11,6 +11,7 @@ pytest = "*"
 pyopenssl = "*"
 pathlib2 = "*"
 gunicorn = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "*"

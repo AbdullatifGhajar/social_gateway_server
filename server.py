@@ -6,11 +6,11 @@ from functools import wraps
 from random import randrange
 from dotenv import load_dotenv
 
+load_dotenv()  # take environment variables from .env.
+
 from flask import Flask, request
 
 app = Flask(__name__)
-
-load_dotenv()
 
 SUPPORTED_LANGUAGES = ('english',)
 DEFAULT_LANGUAGE = 'english'
