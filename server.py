@@ -117,7 +117,9 @@ def receive_answer():
         'answer_audio_uuid': data.get('answer_audio_uuid', 'NULL'),
     })
     # if answer_audio_uuid is set the data should be sent to /audio
-    return 'Thanks for your answer!'
+    return {
+        'message': 'Thanks for your answer!'
+    }
 
 
 @app.route('/browser/audio', methods=('POST',))
@@ -125,17 +127,25 @@ def receive_answer():
 def receive_audio():
     # TODO: rename assertions
     if 'uuid' not in request.args.keys():
-        return 'UUID is required.', 400
+        return {
+            'message': 'UUID is required.'
+        }, 400
 
     if not request.content_length:
-        return 'Audio data is required.', 400
+        return {
+            'message': 'Audio data is required.'
+        }, 400
 
     if request.content_length > 5 * 10**6:
-        return 'File is too big: ' + request.content_length + ' byte.', 400
+        return {
+            'message': f'File is too big: {request.content_length} byte.'
+        }, 400
 
     write_audio('audio/' + request.args["uuid"] + '.aac', request.get_data())
 
-    return 'Thanks for your audio answer!'
+    return {
+        'message': 'Thanks for your audio answer!'
+    }
 
 
 main()
