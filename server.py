@@ -1,41 +1,41 @@
+from flask import Flask, request
 import csv
 from datetime import datetime
 import json
 import os
+import random
+import dotenv
 from functools import wraps
-from random import randrange
-from dotenv import load_dotenv
 
-load_dotenv()  # take environment variables from .env.
+dotenv.load_dotenv()  # take environment variables from .env.
 
-from flask import Flask, request
 
 app = Flask(__name__)
 
 SUPPORTED_LANGUAGES = ('english',)
 DEFAULT_LANGUAGE = 'english'
-DEFAULT_QUESTION_TYPE = 'normal'
+DEFAULT_PROMPT_TYPE = 'normal'
 LINE_BUFFERING = 1
 KEY = os.environ.get('KEY')
 
 
-def main(testing=False, injected_questions=None, injected_write_answer=None,
+def main(testing=False, injected_prompts=None, injected_write_answer=None,
          injected_write_audio=None):
-    global questions, write_answer, write_audio
+    global prompts, write_answer, write_audio
 
     # dependency injection for testing
     if testing:
-        questions = injected_questions
+        prompts = injected_prompts
         write_answer = injected_write_answer
         write_audio = injected_write_audio
         return
 
-    with open('questions.json') as f:
-        questions = json.load(f)
+    with open('prompts.json') as input_file:
+        prompts = json.load(input_file)
 
-        for question in questions:
+        for prompt in prompts:
             for key in SUPPORTED_LANGUAGES:
-                assert key in question
+                assert key in prompt
 
     # not using "with", keep the file open as long as the server is running
     # newline='' is recommended for csv, buffering=1 means line buffering
@@ -46,7 +46,7 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
             'user_id',
             'date',
             'app_name',
-            'question',
+            'prompt',
             'answer_text',
             'answer_audio_uuid',
         ))
@@ -59,8 +59,8 @@ def main(testing=False, injected_questions=None, injected_write_answer=None,
         answers_csv_writer.writerow(row)
 
     def write_audio(file_name, data):
-        with open(file_name, 'wb') as f:
-            f.write(data)
+        with open(file_name, 'wb') as output_file:
+            output_file.write(data)
 
 
 def key_required(func):
@@ -74,33 +74,34 @@ def key_required(func):
     return check_key
 
 
-@app.route('/browser/question')
+@app.route('/browser/prompt')
 @key_required
-def send_question():
+def send_prompt():
     app_name = request.args.get('app_name', 'this app')
-    question_type = request.args.get('question_type', DEFAULT_QUESTION_TYPE)
+    prompt_type = request.args.get('prompt_type', DEFAULT_PROMPT_TYPE)
 
-    def is_suitable(question):
+    def is_suitable(prompt):
         suitable = True
-        suitable &= question.get('question_type', 'normal') == question_type
+        suitable &= prompt.get('prompt_type', 'normal') == prompt_type
 
-        if 'whitelist' in question:
-            suitable &= app_name in question['whitelist']
+        if 'whitelist' in prompt:
+            suitable &= app_name in prompt['whitelist']
 
-        if 'blacklist' in question:
-            suitable &= app_name not in question['blacklist']
+        if 'blacklist' in prompt:
+            suitable &= app_name not in prompt['blacklist']
 
         return suitable
 
-    suitable_questions = [
-        question for question in questions if is_suitable(question)]
+    suitable_prompts = [
+        prompt for prompt in prompts if is_suitable(prompt)]
 
     language = request.args.get('language', DEFAULT_LANGUAGE)
-    question_id = request.args.get('question_id',
-                                   randrange(len(suitable_questions)))
+    chosen_prompt = random.choice(suitable_prompts)
 
-    question_template = suitable_questions[int(question_id)][language]
-    return question_template.replace('<app_name>', app_name)
+    return {
+        'content': chosen_prompt[language].replace('<app_name>', app_name),
+        'answerable': chosen_prompt['answerable']
+    }
 
 
 @app.route('/browser/answer', methods=('POST',))
@@ -111,7 +112,7 @@ def receive_answer():
         'date': datetime.utcnow().isoformat(),
         'user_id': data.get('user_id', 'NULL'),
         'app_name': data.get('app_name', 'NULL'),
-        'question': data.get('question', 'NULL'),
+        'prompt': data.get('prompt', 'NULL'),
         'answer_text': data.get('answer_text', 'NULL'),
         'answer_audio_uuid': data.get('answer_audio_uuid', 'NULL'),
     })

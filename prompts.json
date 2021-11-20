@@ -1,0 +1,57 @@
+[
+  {
+    "english": "What made you decide to open <app_name> right now?",
+    "answerable": true
+  },
+  {
+    "english": "Hey! What do you expect of using <app_name> today?",
+    "answerable": true
+  },
+  {
+    "english": "What is your goal for social media today?",
+    "answerable": true
+  },
+  {
+    "english": "Go outside and get some fresh air!",
+    "answerable": false
+  },
+  {
+    "english": "Dont forget to take a water break & stretch!",
+    "answerable": false
+  },
+  {
+    "english": "How long do you hope to use <app_name> for?",
+    "answerable": true
+  },
+  {
+    "english": "Remember to take calm breaths when feeling stressed.",
+    "answerable": false
+  },
+  {
+    "english": "Have you taken a walk today?",
+    "answerable": true
+  },
+  {
+    "english": "What type of videos do you watch?",
+    "answerable": true
+  },
+  {
+    "english": "What kind of content do you think you will see?",
+    "answerable": true
+  },
+  {
+    "english": "How do you feel about your experience just now on <app_name>?",
+    "answerable": true,
+    "prompt_type": "reflection"
+  },
+  {
+    "english": "What was the best thing you saw today?",
+    "answerable": true,
+    "prompt_type": "reflection"
+  },
+  {
+    "english": "Whats something you found funny today?",
+    "answerable": true,
+    "prompt_type": "reflection"
+  }
+]
