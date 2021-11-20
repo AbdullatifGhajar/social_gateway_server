@@ -69,7 +69,9 @@ def key_required(func):
         if(request.args.get('key', '') == KEY):
             return func(*args, **kwargs)
         else:
-            return 'invalid key', 401
+            return {
+                'message': 'invalid key'
+            }, 401
 
     return check_key
 
