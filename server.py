@@ -160,7 +160,7 @@ def authenticate_user():
     if not email or not password:
         return {"message": "email and password can't be empty"}, 400
 
-    if email == "admin" and password == "adminforsocial":
+    if email == "admin@hpi.de" and password == "adminforsocial":
         return {
             "id": "0",
             "email": "admin@hpi.de",
