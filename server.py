@@ -152,6 +152,7 @@ def privacy_policy():
 
 
 @app.route("/browser/users")
+@key_required
 def authenticate_user():
     username = request.args.get("username", "")
     password = request.args.get("password", "")
