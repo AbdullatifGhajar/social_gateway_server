@@ -1,6 +1,7 @@
 # user data
 answers.csv
 audio/
+users.csv
 
 # env
 .venv

@@ -154,17 +154,37 @@ def privacy_policy():
 @app.route("/browser/users")
 @key_required
 def authenticate_user():
-    username = request.args.get("username", "")
+    email = request.args.get("email", "")
     password = request.args.get("password", "")
 
-    if not username or not password:
-        return {"message": "username and password can't be empty"}, 400
+    if not email or not password:
+        return {"message": "email and password can't be empty"}, 400
+
+    if email == "admin" and password == "adminforsocial":
+        return {
+            "id": "0",
+            "email": "admin@hpi.de",
+            "displayName": "admin"
+        }
+
+    with open("users.csv") as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            if row["email"] == email:
+                if row["password"] == password:
+                    return {
+                        "id": row["id"],
+                        "email": row["email"],
+                        "displayName": row["displayName"]
+                    }
+                else:
+                    return {
+                        "message": "Wrong password"
+                    }, 403
 
     return {
-        "id": "0",
-        "email": "admin@hpi.de",
-        "displayName": "admin"
-    }
+        "message": "User could not be authenticated"
+    }, 400
 
 
 main()
