@@ -44,7 +44,8 @@ def main(
 
     # not using "with", keep the file open as long as the server is running
     # newline='' is recommended for csv, buffering=1 means line buffering
-    answers_file = open("answers.csv", "a", newline="", buffering=LINE_BUFFERING)
+    answers_file = open("answers.csv", "a", newline="",
+                        buffering=LINE_BUFFERING)
     answers_csv_writer = csv.DictWriter(
         answers_file,
         (
@@ -148,6 +149,21 @@ def receive_audio():
 @app.route("/browser/privacy")
 def privacy_policy():
     return render_template("privacy.html")
+
+
+@app.route("/browser/users")
+def authenticate_user():
+    username = request.args.get("username", "")
+    password = request.args.get("password", "")
+
+    if not username or not password:
+        return {"message": "username and password can't be empty"}, 400
+
+    return {
+        "id": "0",
+        "email": "admin@hpi.de",
+        "displayName": "admin"
+    }
 
 
 main()
