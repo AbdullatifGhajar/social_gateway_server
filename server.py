@@ -6,7 +6,7 @@ from datetime import datetime
 from functools import wraps
 
 import dotenv
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 
 dotenv.load_dotenv()  # take environment variables from .env.
 
@@ -185,6 +185,11 @@ def authenticate_user():
     return {
         "message": "User could not be authenticated"
     }, 400
+
+
+@app.route('/browser/download-aware')
+def download_aware():
+    return send_file("aware.apk", as_attachment=True)
 
 
 main()

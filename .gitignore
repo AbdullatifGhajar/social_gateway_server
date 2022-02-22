@@ -10,3 +10,6 @@ users.csv
 # cache
 __pycache__
 .pytest_cache
+
+# downloads
+aware.apk
