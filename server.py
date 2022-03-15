@@ -187,6 +187,38 @@ def authenticate_user():
     }, 400
 
 
+@app.route("/browser/balance")
+@key_required
+def get_balance():
+    email = request.args.get("email", "")
+    password = request.args.get("password", "")
+
+    if not email or not password:
+        return {"message": "email and password can't be empty"}, 400
+
+    if email == "admin@hpi.de" and password == "adminforsocial":
+        return {
+            "balance": 0
+        }
+
+    with open("users.csv") as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            if row["email"] == email:
+                if row["password"] == password:
+                    return {
+                        "balance": row["balance"]
+                    }
+                else:
+                    return {
+                        "message": "Wrong password"
+                    }, 403
+
+    return {
+        "message": "User could not be authenticated"
+    }, 400
+
+
 @app.route('/browser/download-aware')
 def download_aware():
     return send_file("aware.apk", as_attachment=True)
