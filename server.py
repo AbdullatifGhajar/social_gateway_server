@@ -8,6 +8,8 @@ from functools import wraps
 import dotenv
 from flask import Flask, render_template, request, send_file
 
+from participants_api import ParticipatsAPI
+
 dotenv.load_dotenv()  # take environment variables from .env.
 
 
@@ -44,8 +46,7 @@ def main(
 
     # not using "with", keep the file open as long as the server is running
     # newline='' is recommended for csv, buffering=1 means line buffering
-    answers_file = open("answers.csv", "a", newline="",
-                        buffering=LINE_BUFFERING)
+    answers_file = open("answers.csv", "a", newline="", buffering=LINE_BUFFERING)
     answers_csv_writer = csv.DictWriter(
         answers_file,
         (
@@ -161,65 +162,23 @@ def authenticate_user():
         return {"message": "email and password can't be empty"}, 400
 
     if email == "admin@hpi.de" and password == "adminforsocial":
-        return {
-            "id": "0",
-            "email": "admin@hpi.de",
-            "displayName": "admin"
-        }
+        return {"id": "0", "email": "admin@hpi.de", "displayName": "admin"}
 
-    with open("users.csv") as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            if row["email"] == email:
-                if row["password"] == password:
-                    return {
-                        "id": row["id"],
-                        "email": row["email"],
-                        "displayName": row["displayName"]
-                    }
-                else:
-                    return {
-                        "message": "Wrong password"
-                    }, 403
+    api = ParticipatsAPI()
 
-    return {
-        "message": "User could not be authenticated"
-    }, 400
+    authenticated_user = api.get_authenticated_user(email, password)
+    if not authenticated_user:
+        return {"message": "Email address or password wrong"}, 403
+
+    survery_done = request.args.get("survey", "")
+    if survery_done:
+        api.update_balance(email, 1)
+        return {}
+    else:
+        return authenticated_user
 
 
-@app.route("/browser/balance")
-@key_required
-def get_balance():
-    email = request.args.get("email", "")
-    password = request.args.get("password", "")
-
-    if not email or not password:
-        return {"message": "email and password can't be empty"}, 400
-
-    if email == "admin@hpi.de" and password == "adminforsocial":
-        return {
-            "balance": 0
-        }
-
-    with open("users.csv") as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            if row["email"] == email:
-                if row["password"] == password:
-                    return {
-                        "balance": row["balance"]
-                    }
-                else:
-                    return {
-                        "message": "Wrong password"
-                    }, 403
-
-    return {
-        "message": "User could not be authenticated"
-    }, 400
-
-
-@app.route('/browser/download-aware')
+@app.route("/browser/download-aware")
 def download_aware():
     return send_file("aware.apk", as_attachment=True)
 
