@@ -170,9 +170,9 @@ def authenticate_user():
     if not authenticated_user:
         return {"message": "Email address or password wrong"}, 403
 
-    survery_done = request.args.get("survey", "")
-    if survery_done:
-        api.update_balance(email, 1)
+    survey_points = request.args.get("survey", "")
+    if survey_points:
+        api.update_balance(email, int(survey_points))
         return {}
     else:
         return authenticated_user
