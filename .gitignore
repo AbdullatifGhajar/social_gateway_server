@@ -16,3 +16,6 @@ aware.apk
 # secrets
 .env
 participants-api.json
+
+# big files
+videos

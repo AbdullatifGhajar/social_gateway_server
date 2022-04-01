@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Locus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
   </head>
   <body>
     <h1>Locus</h1>
@@ -11,5 +12,12 @@
     secure server. All registered users are provided with a consent form that
     includes complete details about the data collected, how it is stored, and
     how it will be used.
+    <h2>Tutorial</h2>
+    <div class="center">
+      <video id="locus-tutorial" width="50%" controls>
+        <source src="{{ url_for('static', filename='videos/locus_tutorial.mp4') }}" type="video/mp4">
+      </video>
+    </div>
+    
   </body>
 </html>
