@@ -14,6 +14,7 @@ dotenv.load_dotenv()  # take environment variables from .env.
 
 
 app = Flask(__name__)
+app.config["APPLICATION_ROOT"] = "/abc/123"
 
 SUPPORTED_LANGUAGES = ("english",)
 DEFAULT_LANGUAGE = "english"
@@ -147,9 +148,10 @@ def receive_audio():
     return {"message": "Thanks for your audio answer!"}
 
 
+@app.route("/browser/locus")
 @app.route("/browser/privacy")
-def privacy_policy():
-    return render_template("privacy.html")
+def locus():
+    return render_template("locus.html")
 
 
 @app.route("/browser/users")
