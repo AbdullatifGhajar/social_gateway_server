@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Locus</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static_bp.static', filename='styles/index.css') }}">
   </head>
   <body>
     <h1>Locus</h1>
@@ -15,7 +15,7 @@
     <h2>Tutorial</h2>
     <div class="center">
       <video id="locus-tutorial" height="70%" controls>
-        <source src="{{ url_for('static', filename='videos/locus_tutorial.mp4') }}" type="video/mp4">
+        <source src="{{ url_for('static_bp.static', filename='videos/locus_tutorial.mp4') }}" type="video/mp4">
       </video>
     </div>
     
