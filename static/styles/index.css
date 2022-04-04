@@ -22,3 +22,9 @@ h2 {
 div.center {
   text-align: center;
 }
+
+#locus-icon {
+  width: 80px;
+  float: left;
+  margin: 0 15px 0 0;
+}
