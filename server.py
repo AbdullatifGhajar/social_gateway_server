@@ -12,7 +12,7 @@ from participants_api import ParticipatsAPI
 
 dotenv.load_dotenv()  # take environment variables from .env.
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/browser/static")
 
 SUPPORTED_LANGUAGES = ("english",)
 DEFAULT_LANGUAGE = "english"
@@ -177,11 +177,9 @@ def authenticate_user():
     else:
         return authenticated_user
 
-
 @app.route("/browser/download-aware")
 def download_aware():
     return send_file("aware.apk", as_attachment=True)
-
 
 main()
 
