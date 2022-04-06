@@ -1,22 +1,18 @@
 import csv
 import json
-from logging import root
 import os
 import random
 from datetime import datetime
 from functools import wraps
 
 import dotenv
-from flask import Blueprint, Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file
 
 from participants_api import ParticipatsAPI
 
 dotenv.load_dotenv()  # take environment variables from .env.
 
-static_bp = admin = Blueprint('static_bp', __name__, static_folder='static', static_url_path='/baudisch/projects/neo4j/api')
-
-app = Flask(__name__)
-app.register_blueprint(static_bp)
+app = Flask(__name__, static_url_path="/browser/static")
 
 SUPPORTED_LANGUAGES = ("english",)
 DEFAULT_LANGUAGE = "english"
@@ -188,11 +184,9 @@ def authenticate_user():
     else:
         return authenticated_user
 
-
 @app.route("/browser/download-aware")
 def download_aware():
     return send_file("aware.apk", as_attachment=True)
-
 
 main()
 

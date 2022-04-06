@@ -1,10 +1,24 @@
 <html>
   <head>
     <title>Locus</title>
-    <link rel="stylesheet" href="{{ url_for('static_bp.static', filename='styles/index.css') }}">
+    <link rel="stylesheet" href="static/styles/index.css">
   </head>
   <body>
-    <h1>Locus</h1>
+    <div>
+      <img src="static/images/roundIcon.svg" alt="Locus Icon" id="locus-icon">
+      <h1>Locus</h1>
+    </div>
+
+    <h2>Tutorial</h2>
+    <video id="locus-tutorial" height="70%" controls>
+      <source src="static/videos/locus_tutorial.mp4" type="video/mp4">
+    </video>
+    
+    <h2>Install</h2>
+    <a href='https://play.google.com/store/apps/details?id=com.socialgateway.socialgateway&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+      <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="30%"/>
+    </a>
+
     <h2>Privacy Policy</h2>
     This app is part of a research study at the University of Washington in
     Seattle, WA, USA. Only registered study participants will be able to use the
@@ -12,12 +26,5 @@
     secure server. All registered users are provided with a consent form that
     includes complete details about the data collected, how it is stored, and
     how it will be used.
-    <h2>Tutorial</h2>
-    <div class="center">
-      <video id="locus-tutorial" height="70%" controls>
-        <source src="{{ url_for('static_bp.static', filename='videos/locus_tutorial.mp4') }}" type="video/mp4">
-      </video>
-    </div>
-    
   </body>
 </html>
