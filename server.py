@@ -91,6 +91,13 @@ def send_prompt():
     app_name = request.args.get("app_name", "this app")
     prompt_type = request.args.get("prompt_type", DEFAULT_PROMPT_TYPE)
 
+    # TODO: add this only for the first app opened that day
+    # {
+    # "english": "What is your goal for social media today?",
+    # "answerable": true,
+    # "prompt_type": "normal"
+    # },
+
     def is_suitable(prompt):
         suitable = True
         suitable &= prompt.get("prompt_type", "normal") == prompt_type
@@ -109,7 +116,7 @@ def send_prompt():
     chosen_prompt = random.choice(suitable_prompts)
 
     return {
-        "content": chosen_prompt[language].replace("<app_name>", app_name),
+        "content": chosen_prompt[language].replace("<app>", app_name),
         "answerable": chosen_prompt["answerable"],
     }
 
