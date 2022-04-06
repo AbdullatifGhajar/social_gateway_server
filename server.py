@@ -158,6 +158,10 @@ def receive_audio():
 def locus():
     return render_template("locus.html")
 
+@app.route("/browser/aware")
+def aware():
+    return render_template("aware.html")
+
 
 @app.route("/browser/users")
 @key_required
