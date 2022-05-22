@@ -192,6 +192,10 @@ def authenticate_user():
 def download_aware():
     return send_file("aware.apk", as_attachment=True)
 
+@app.route("/browser/download-locus-answers")
+def download_locus_answers():
+    return send_file("answers.csv", as_attachment=True)
+
 main()
 
 if __name__ == "__main__":
