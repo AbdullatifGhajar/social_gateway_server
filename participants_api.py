@@ -8,14 +8,15 @@ SCOPES = [
 ]
 SECRET_FILE = "participants-api.json"
 SPREADSHEET_ID = "1Ysgz_rL_xrx2FNUfQMnI4Oxc3sLo-Oi1c9WaTWWyZZc"
-RANGE_NAME = "Sheet1!A:M"
+RANGE_NAME = "Sheet1!A:F"
 
-HEADER = ["id", "email", "password", "displayName", "balance"]
+HEADER = ["id", "email", "password", "displayName", "downloaded locus", "balance"]
 ID = 0
 EMAIL = 1
 PASSWORD = 2
 DISPLAY_NAME = 3
-BALANCE = 4
+DOWNLOADED_LOCUS = 4
+BALANCE = 5
 
 
 class ParticipatsAPI:
@@ -71,3 +72,26 @@ class ParticipatsAPI:
             range=RANGE_NAME,
             valueInputOption="USER_ENTERED",
         ).execute()
+    
+    def update_downloaded_locus(self, id_):
+        rows = self.get_rows()
+
+        for row in rows[1:]:
+            if int(row[ID]) == int(id_):
+                if row[DOWNLOADED_LOCUS] == "yes":
+                    return
+                else:
+                    row[DOWNLOADED_LOCUS] = "yes"
+                    row[BALANCE] = int(row[BALANCE]) + 10
+                    break
+        
+        self.sheet.values().update(
+            spreadsheetId=SPREADSHEET_ID,
+            body={"values": rows},
+            range=RANGE_NAME,
+            valueInputOption="USER_ENTERED",
+        ).execute()
+
+
+
+

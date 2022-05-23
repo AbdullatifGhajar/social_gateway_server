@@ -13,6 +13,7 @@ from participants_api import ParticipatsAPI
 dotenv.load_dotenv()  # take environment variables from .env.
 
 app = Flask(__name__, static_url_path="/browser/static")
+api = ParticipatsAPI()
 
 SUPPORTED_LANGUAGES = ("english",)
 DEFAULT_LANGUAGE = "english"
@@ -121,6 +122,8 @@ def send_prompt():
 @key_required
 def receive_answer():
     data = request.get_json(force=True)
+    api.update_downloaded_locus(data.get("user_id"))
+
     write_answer(
         {
             "date": datetime.utcnow().isoformat(),
@@ -174,8 +177,6 @@ def authenticate_user():
 
     if email == "admin@hpi.de" and password == "adminforsocial":
         return {"id": "0", "email": "admin@hpi.de", "displayName": "admin"}
-
-    api = ParticipatsAPI()
 
     authenticated_user = api.get_authenticated_user(email, password)
     if not authenticated_user:
