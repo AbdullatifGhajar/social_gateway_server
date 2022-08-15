@@ -100,10 +100,10 @@ def send_prompt():
         suitable &= prompt.get("prompt_type", "normal") == prompt_type
 
         if "whitelist" in prompt:
-            suitable &= app_name in prompt["whitelist"]
+            suitable &= app_name.lower() in prompt["whitelist"]
 
         if "blacklist" in prompt:
-            suitable &= app_name not in prompt["blacklist"]
+            suitable &= app_name.lower() not in prompt["blacklist"]
 
         return suitable
 

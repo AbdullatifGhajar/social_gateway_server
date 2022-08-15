@@ -8,7 +8,7 @@ SCOPES = [
 ]
 SECRET_FILE = "participants-api.json"
 SPREADSHEET_ID = "1Ysgz_rL_xrx2FNUfQMnI4Oxc3sLo-Oi1c9WaTWWyZZc"
-RANGE_NAME = "Sheet1!A:F"
+RANGE_NAME = "Participant Progress!A:F"
 
 HEADER = ["id", "email", "password", "displayName", "downloaded locus", "balance"]
 ID = 0
