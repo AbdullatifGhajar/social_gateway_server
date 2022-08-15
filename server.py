@@ -70,7 +70,7 @@ def main(
         with open(file_name, "wb") as output_file:
             output_file.write(data)
 
-
+# a decorator that checks the key in the request
 def key_required(func):
     @wraps(func)
     def check_key(*args, **kwargs):

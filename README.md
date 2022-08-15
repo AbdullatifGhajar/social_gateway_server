@@ -1,29 +1,34 @@
-# social_gateway_server
+# Locus server
 
-To change the questions you need to reboot the server, do this by copying the questions.json file either to this drive:
-scp path_on_your_system kdavis@fb07-neo4j.hpi.uni-potsdam.de:./social_gateway_server/questions.json or by directly editing the file using vim questions.json in this folder
+## How it works
 
-To kill the server, find the current process ID using ´ps -A´  
-This prints a large list of processes of which you need to find the one that has gunicorn (name of the server software) as name
-kill that process using:
-sudo kill xxxxxxx
-In which xxxxxxx is the process id (pid) you just found
+This server is an API for the Locus app. It provides the list of prompts and user authentication. It also stores the responses collected by the Locus App and hosts a website with instructions on how to use Locus and Aware Light. Here is a link to Locus documentation: https://github.com/AbdullatifGhajar/social_gateway/blob/master/README.md. 
 
-To reboot the server run this command in the current folder:
-/home/kdavis/.local/share/virtualenvs/social_gateway_server-8ajIfuiW/bin/gunicorn -w 1 -b 0.0.0.0:7474 server:app
-The response should be similar to this:
-[2021-09-05 17:16:07 +0200] [16622] [INFO] Starting gunicorn 19.9.0
-[2021-09-05 17:16:07 +0200] [16622] [INFO] Listening at: http://0.0.0.0:7474 (16622)
-[2021-09-05 17:16:07 +0200] [16622] [INFO] Using worker: sync
-[2021-09-05 17:16:07 +0200] [16625] [INFO] Booting worker with pid: 16625
+### Prompts & Reflection Questions
 
-You can test whether the server is running by visiting https://hpi.de/baudisch/projects/neo4j/api/question?key=hef3TF%5eVg90546bvgFVL%3EZzxskfou;aswperwrsf,c/x
-It should present you with one of the questions
+All prompts are stored in prompts.json. Each prompt has the following attributes:
 
-To download the answers.csv file use
-scp answers.csv path_on_your_system
-Which should create a copy of the file on your specified path location
+- english (str): the English translation of the prompt. This means that other languages would get a different attribute.
+- answerable (bool): whether the prompt is a question that needs to be answered. The opposite is just a hint for the day.
+- prompt_type (str): there are normal prompts that appear when apps are opened and there are reflection questions that appear at the end of the day.
+- blacklist (list\[str\]): the list of apps where this prompt should never appear.
+- Whitelist (list\[str\]): the list of apps for which this prompt should be answered. This means that you can only receive this prompt if you open one of these apps.
 
-To download the sound files, run the scp command with -r
-scp -r /audio path_on_your_system
-For all commands here you need to have a VPN connection or be in the HPI network, use EndPointSecurity client from HPI to set this up
+### User authentication
+
+With a Google Sheet, you can store a list of participants with their credentials. This makes it easier to authenticate and maintain this list manually. It is very important to adjust the participants_api.py file when the Google Sheet layout changes.
+
+### Storage
+
+The users' answers are stored in answers.csv.
+
+### Tutorials
+
+Tutorials can be found in the templates. Here is the link to the websites
+
+- Locus: https://hpi.de/baudisch/projects/neo4j/api/locus
+- Aware Light: https://hpi.de/baudisch/projects/neo4j/api/aware
+
+## Usage
+
+To start the server type `make start` in the terminal. To stop it type `make stop` and ignore the error.
