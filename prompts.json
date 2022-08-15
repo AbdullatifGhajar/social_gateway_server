@@ -1,21 +1,11 @@
 [
   {
-    "english": "Think back on your social media use today — what stands out?",
-    "answerable": true,
-    "prompt_type": "reflection"
-  },
-  {
     "english": "Think back on your social media use today — is there anything you plan to do differently tomorrow?",
     "answerable": true,
     "prompt_type": "reflection"
   },
   {
     "english": "Was there anything about your social media use today that made you feel stressed? What would make it less stressful tomorrow?",
-    "answerable": true,
-    "prompt_type": "reflection"
-  },
-  {
-    "english": "What were your most and least favorite apps today? Why?",
     "answerable": true,
     "prompt_type": "reflection"
   },
@@ -30,22 +20,20 @@
     "prompt_type": "reflection"
   },
   {
-    "english": "Did the Locus prompts influence how you interacted with social media today?",
+    "english": "How do you want to use social media tomorrow?",
     "answerable": true,
     "prompt_type": "reflection"
   },
   {
+    "english": "Looking forward to tomorrow, what would make your time on social media feel like time well spent?",
+    "answerable": true,
+    "prompt_type": "reflection"
+  },
+
+
+  
+  {
     "english": "Hey! What are you expecting from your time on <app>?",
-    "answerable": true,
-    "prompt_type": "normal"
-  },
-  {
-    "english": "How do you expect to feel after using <app>?",
-    "answerable": true,
-    "prompt_type": "normal"
-  },
-  {
-    "english": "How are you hoping to feel after using <app>?",
     "answerable": true,
     "prompt_type": "normal"
   },
@@ -62,12 +50,8 @@
   {
     "english": "Are there any accounts you could follow or unfollow to make things a little less intense on <app>? ",
     "answerable": true,
-    "prompt_type": "normal"
-  },
-  {
-    "english": "Are there any accounts you could follow or unfollow to make life more enjoyable on <app>?",
-    "answerable": true,
-    "prompt_type": "normal"
+    "prompt_type": "normal",
+    "whitelist": ["tiktok", "instagram"]
   },
   {
     "english": "Who are you most interested in seeing updates from or talking to?",
@@ -75,7 +59,7 @@
     "prompt_type": "normal"
   },
   {
-    "english": "Is there anyone you're hoping to see or talk with <app>?",
+    "english": "Is there anyone you're hoping to see or talk to on <app>?",
     "answerable": true,
     "prompt_type": "normal"
   },
